@@ -6,8 +6,6 @@ https://store.google.com/us/product/pixel_4
 
 */
 
-part="adapter"; //[case_adapter:CASE with Adapter,test:TEST Adapter,debug:DEBUG]
-
 /* [Case] */
 
 input_case_thickness=2;
@@ -36,9 +34,6 @@ input_adapter_screw_invert=true;
 
 // Number of screws.
 input_adapter_screw_count=3;
-
-/* [Eyepiece] */
-
 
 /* [Hidden] */
 
@@ -72,7 +67,6 @@ camera_rot=phone_rot;
 buttons_dim=[40,0.5,2.8];
 buttons_xyz=phone_xyz+[33.5,phone_dim[i_y],2.6];
 buttons_rot=phone_rot;
-
 
 adapter_cyl=[input_adapter_height,input_adapter_inner_diameter,input_adapter_inner_diameter+input_adapter_thickness*2];
 adapter_rot=ORIGIN;
@@ -214,17 +208,6 @@ module screw_hole(d,h)
     }
 }
 
-module pie_slice(xyz,cyl,rot,degrees=45)
-{
-    t_x=cyl[i_id]<0?0:cyl[i_id];
-    translate(xyz)
-    rotate(rot)
-    rotate_extrude(angle=degrees,convexity=2)
-    translate([t_x,0,0])
-    square([cyl[i_od]/2-cyl[i_id]/2,cyl[i_h]],false);
-    
-}
-
 module adapter(c="purple",t=1) 
 {
     color(c,t)
@@ -293,60 +276,9 @@ module case(xyz=case_xyz,dim=case_dim,rot=case_rot,c="lime",t=1,fancy=true)
         // make the cuts
         case_cuts();
     }
-    
-    // TODO add squared adapter?
 }
 
-if (part == "phone") {
-    phone();
-} else if (part == "case") {
-    case();
-} else if (part == "case_phone") {
-    case();
-    phone(t=.5);
-} else if (part == "adapter") {
+union() {
     adapter();
-} else if (part == "case_adapter") {
-    union() {
-        adapter();
-        case(fancy=false);
-    }
-} else if (part == "case_cuts") {
-    case_cuts();
-} else if (part == "test") {
-    // just enough to do the holes and the camera adapter fits on an eyepiece adapter
-    difference()
-    {
-        adapter();
-        
-        translate(adapter_xyz+[0,0,input_adapter_screw_offset+input_adapter_screw_diameter*1.5])
-        cylinder(d=adapter_cyl[i_od]*2,h=adapter_cyl[i_h],center=true);
-    }
-}
-
-module debug_y(xyz=ORIGIN,value,c="red",t=0.5) {
-    color(c,t)
-    translate(xyz)
-    rotate([-90,0,0])
-    cylinder(d=10,h=value);
-}
-
-module debug_z(xyz=ORIGIN,value,c="red",t=0.5) {
-    color(c,t)
-    translate(xyz)
-    rotate([0,0,90])
-    cylinder(d=10,h=value);
-}
-
-module debug_point(xyz=ORIGIN,d=25,c="red",t=0.5) {
-    color(c,t)
-    translate(xyz)
-    sphere(d=d);
-}
-
-module debug(value,xyz=[0,-50,0],s=2,c="red",t=0.5) {
-    translate(xyz)
-    rotate([0,0,0])
-    scale(s)
-    text(str(value));
+    case(fancy=false);
 }
