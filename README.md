@@ -86,16 +86,17 @@ The 1.25" eyepiece is placed into the eyepiece adapter.  Gently tighten the thum
 
 Install the eyepiece adapter on your scope's focuser.  You can focus now assuming you can get your eye in a good place relative to the eyepiece.
 
-![Eyepiece on Telescope][images/eyepiece-adapter-on-telescope.jpg]
+![Eyepiece on Telescope](images/eyepiece-adapter-on-telescope.jpg)
 
 ## Install Camera
 
 Add the camera in the case and gently tighten screws.  Turn on the camera and focus if you couldn't before or you bumped something.
 
 ![Pixel 4 on Telescope](images/pixel4-telescope.jpg)
+(This is photo taken with a prototype of this model, yes it's inside my house, no my wall isn't M42...)
 
 ## Take Pictures!
 
-And since it's not night yet when I wrote this, here's a shot of some random trees down the road from my house.  Using a 25mm eyepiece with the XT8 (1200mm focal length) means 48x magnification.
+Using my Orion SkyQuest XT7 (1200mm focal length) and a 25mm eyepiece I took this shot within city limits (yea, my driveway).  I used night sight with astrophotography turned off, 3 second delay, and locked focus (not sure it makes a difference).
 
-![Trees](images/trees.jpg)
+![Trees](images/M42.jpg)

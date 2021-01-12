@@ -14,53 +14,43 @@ NOTE in this model you change only the "Eyepiece / Camera Adapter" values per ey
 
 */
 
-/* [2" to 1.25" Adapter] */
+module eyepiece_adapter(
+    // Compensate for extra surface area added by extrusion for the inner and outer diameters.  NOT USED for the lip or extension!
+    over_extrusion=0.1,
 
-// Compensate for extra surface area added by extrusion for the inner and outer diameters.  NOT USED for the lip or extension!
-input_over_extrusion=0.1;
+    // The outer diameter (inches) of the adapter.  This is what fits into the telescope (or some larger adapter).
+    outer_diameter_inches=2,
 
-// The outer diameter (inches) of the adapter.  This is what fits into the telescope (or some larger adapter).
-input_outer_diameter_inches=2;
+    // The inner diameter (inches) of the adapter, also the outer diameter of your eyepiece.
+    inner_diameter_inches=1.25,
 
-// The inner diameter (inches) of the adapter, also the outer diameter of your eyepiece.
-input_inner_diameter_inches=1.25;
+    // The outer diameter (inches) of the lip (with screw).  Note this is also the OD of the extension.
+    lip_outer_diameter=56,
 
-// The outer diameter (inches) of the lip (with screw).  Note this is also the OD of the extension.
-input_lip_outer_diameter=56;
+    // Overall height (mm) of the adapter, including the lip.  Doesn't change per eyepiece.
+    adapter_height=30,
 
-// Overall height (mm) of the adapter, including the lip.  Doesn't change per eyepiece.
-input_adapter_height=30;
+    // Height (mm) of just the lip.  If zero (0) no screw is added.  Doesn't change per 
+    adapter_lip_height=10,
 
-// Height (mm) of just the lip.  If zero (0) no screw is added.  Doesn't change per 
-input_adapter_lip_height=10;
+    // Diameter of your screw threads.
+    screw_thread_diameter=3.9,
 
-// Diameter of your screw threads.
-input_screw_thread_diameter=3.91;
+    /* [Eyepiece / Camera Adapter] */
+    // Height from top of "lip" to top of the extension.
+    extension_height=20,
 
-/* [Eyepiece / Camera Adapter] */
-// Height from top of "lip" to top of the extension.
-input_extension_height=20;
+    // Height from top of "lip" to top of the extension.
+    extension_thickness=5
+)
+{
+    // raw shape for the adapter (hidden: standard sizes)
+    adapter_id=inner_diameter_inches*25.4;
+    adapter_od=outer_diameter_inches*25.4;
 
-// Height from top of "lip" to top of the extension.
-input_extension_thickness=5;
+    // offset from lip top (hidden: standard (hard coded) location for screw into eyepiece)
+    const_adapter_screw_offset_from_lip_top_z=3.8;
 
-// Make it printable without support by having the extension 
-/* [Hidden] */
-$fn=300;
-
-// raw shape for the adapter (hidden: standard sizes)
-adapter_2125_h=input_adapter_height;
-adapter_2125_id=input_inner_diameter_inches*25.4+input_over_extrusion*2;
-adapter_2125_od=input_outer_diameter_inches*25.4-input_over_extrusion*2;
-adapter_2125_lip_h=input_adapter_lip_height;
-adapter_2125_lip_od=input_lip_outer_diameter;
-
-adapter_2125_screw_thread_d=input_screw_thread_diameter;
-
-// offset from lip top (hidden: standard location for screw into eyepiece)
-adapter_2125_screw_offset_from_lip_top_z=3.8;
-
-module adapter() {
     // built upside down, fip for printing.  -90 on Z is for thingieverse orientation
     rotate([0,0,-90])
     difference() 
@@ -69,33 +59,30 @@ module adapter() {
         union() 
         {
             // main adapter bit
-            translate([adapter_2125_id/2,0,0])
-            square([adapter_2125_od/2-adapter_2125_id/2,adapter_2125_h]);
+            translate([adapter_id/2,0,0])
+            square([adapter_od/2-adapter_id/2,adapter_height]);
             
             // lip so it doesn't fall in scope
-            translate([adapter_2125_id/2,adapter_2125_h-adapter_2125_lip_h,0])
-            square([adapter_2125_lip_od/2-adapter_2125_id/2,adapter_2125_lip_h]);
+            translate([adapter_id/2,adapter_height-adapter_lip_height,0])
+            square([lip_outer_diameter/2-adapter_id/2,adapter_lip_height]);
             
             // extension
-            translate([adapter_2125_lip_od/2-input_extension_thickness,input_adapter_height,0])
-            square([input_extension_thickness,input_extension_height]);
+            translate([lip_outer_diameter/2-extension_thickness,adapter_height,0])
+            square([extension_thickness,extension_height]);
         }
         
-        if (input_adapter_lip_height > 0) {
+        if (adapter_lip_height > 0) {
             // cut hole (extruded teardrop, easier print) for screw
-            translate([0,0,-adapter_2125_screw_thread_d/2+adapter_2125_h-adapter_2125_screw_offset_from_lip_top_z])
+            translate([0,0,-screw_thread_diameter/2+adapter_height-const_adapter_screw_offset_from_lip_top_z])
             rotate([0,90,0]) // rotate on side
             rotate([0,0,180]) // flip teardrop over
-            linear_extrude(adapter_2125_lip_od)
+            linear_extrude(lip_outer_diameter)
             hull()
             {
-                circle(d=adapter_2125_screw_thread_d);
-                translate([adapter_2125_screw_thread_d*0.75,0,0])
+                circle(d=screw_thread_diameter);
+                translate([screw_thread_diameter*0.75,0,0])
                 circle(d=0.1);
             }
         }
     }
 }
-
-// Made it a module to make turning it off for debugging easy.
-adapter();

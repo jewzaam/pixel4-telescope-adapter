@@ -1,3 +1,5 @@
+include <shapes.scad>
+
 /*
 
 Pixel 4 case that mounts on a custom 2" to 1.25" adapter.
@@ -22,9 +24,6 @@ input_adapter_thickness=6;
 
 // If this is made too high not all eyepieces can be attached.  Consider a short eyepiece.
 input_adapter_height=35;
-
-// Diameter of screws.
-input_adapter_screw_diameter=3.9;
 
 // Distance to put screws from bottom of adapter
 input_adapter_screw_offset=5;
@@ -167,46 +166,6 @@ case_cuts_rot=[
     // power
     ORIGIN
 ];
-
-module box(xyz,dim,rot,c="lightblue",t=1)
-{
-    color(c,t)
-    translate(xyz)
-    rotate(rot)
-    cube(dim);
-}
-
-module tube(xyz,cyl,rot,c="white",t=1,top_h=0,center=true)
-{
-    color(c,t)
-    translate(xyz)
-    rotate(rot)
-    difference()
-    {
-        cylinder(h=cyl[i_h],d=cyl[i_od],center=center);
-        
-        // only remove center if there is an ID defined
-        if (cyl[i_id] > 0) {
-            // leave top_h mm of material remaining
-            cut_xyz=[0,0,top_h==0?-1:-cyl[i_h]/2-top_h];
-            color("red")
-            translate(cut_xyz)
-            cylinder(h=cyl[i_h]*2,d=cyl[i_id],center=center);
-        }
-    }
-}
-
-module screw_hole(d,h)
-{
-    // create a teardrop and extrude it
-    linear_extrude(h)
-    hull()
-    {
-        circle(d=d);
-        translate([d*0.75,0,0])
-        circle(d=0.1);
-    }
-}
 
 module adapter(c="purple",t=1) 
 {
