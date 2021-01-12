@@ -1,9 +1,11 @@
 include <library/knurled-hex-cap.scad>
 include <library/eyepiece-adapter.scad>
-include <library/pixel4-variables.scad>
 include <library/phone-adapter.scad>
 
-part="pixel4_case"; // [pixel4_case:Pixel 4 Case,hex_cap:Hex Caps,eyepiece_adapter:Eyepiece Adapter]
+include <phones/pixel4.scad>
+include <phones/iphone11.scad>
+
+part="pixel4_case"; // [pixel4_case:Pixel 4 Case,iphone11_case:iPhone11 Case,hex_cap:Hex Caps,eyepiece_adapter:Eyepiece Adapter]
 
 /* [General] */
 // Compensate for extra surface area added by extrusion for the inner and outer diameters.  NOT USED for the lip or extension!
@@ -99,6 +101,29 @@ if (part == "pixel4_case") {
         phone_camera_rot=pixel4_camera_rot,
         phone_camera_center_xyz=pixel4_camera_center_xyz,
         phone_power_width=pixel4_power_width,
+        case_thickness=input_case_thickness,
+        case_lip=input_case_lip,
+        adapter_inner_diameter=input_case_adapter_inner_diameter,
+        adapter_thickness=input_case_adapter_thickness,
+        adapter_height=input_case_adapter_height,
+        adapter_screw_offset=input_case_adapter_screw_offset,
+        adapter_screw_count=input_case_adapter_screw_count,
+        adapter_screw_diameter=input_screw_thread_diameter
+    );
+} else if (part == "iphone11_case") {
+    phone_adapter
+    (
+        phone_xyz=iphone11_phone_xyz,
+        phone_dim=iphone11_phone_dim,
+        phone_rot=iphone11_phone_rot,
+        phone_buttons_dim=iphone11_buttons_dim,
+        phone_buttons_xyz=iphone11_buttons_xyz,
+        phone_buttons_rot=iphone11_buttons_rot,
+        phone_camera_dim=iphone11_camera_dim,
+        phone_camera_xyz=iphone11_camera_xyz,
+        phone_camera_rot=iphone11_camera_rot,
+        phone_camera_center_xyz=iphone11_camera_center_xyz,
+        phone_power_width=iphone11_power_width,
         case_thickness=input_case_thickness,
         case_lip=input_case_lip,
         adapter_inner_diameter=input_case_adapter_inner_diameter,

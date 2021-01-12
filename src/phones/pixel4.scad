@@ -2,12 +2,12 @@
 
 Load this to get variables for the Pixel 4 phone.
 
-include <pixel4-variables.scad>
+include <phones/pixel4.scad>
 
 */
 
 // we need constants from the shapes library
-include <shapes.scad>
+include <../library/shapes.scad>
 
 // pixel4 phone location, dimensinos, and rotation
 pixel4_phone_xyz=[0,0,0];
