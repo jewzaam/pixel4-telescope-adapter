@@ -1,5 +1,5 @@
 include <library/knurled-hex-cap.scad>
-include <library/telescope-eyepiece-adapter-with-extension.scad>
+include <library/eyepiece-adapter.scad>
 include <library/pixel4-variables.scad>
 include <library/phone-adapter.scad>
 
